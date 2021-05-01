@@ -562,7 +562,7 @@ object Boilerplate {
       | * @groupname FoldableSlidingN foldable arity
       | * @groupdesc FoldableSlidingN
       | *   Group sequential elements into fixed sized tuples by passing a "sliding window" over them.
-      | * 
+      | *
       | *   A foldable with fewer elements than the window size will return an empty list unlike `Iterable#sliding(size: Int)`.
       | *   Example:
       | *   {{{
@@ -572,12 +572,12 @@ object Boilerplate {
       | *
       | *   scala> Foldable[List].sliding4((1 to 10).toList)
       | *   val res1: List[(Int, Int, Int, Int)] = List((1,2,3,4), (2,3,4,5), (3,4,5,6), (4,5,6,7), (5,6,7,8), (6,7,8,9), (7,8,9,10))
-      | *   
+      | *
       | *   scala> Foldable[List].sliding4((1 to 2).toList)
       | *   val res2: List[(Int, Int, Int, Int)] = List()
       | *
       | *   }}}
-      | *   
+      | *
       | * @groupprio FoldableSlidingN 999
       | *
       | */
