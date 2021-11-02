@@ -21,11 +21,7 @@ private[instances] trait SortedSetInstances1 {
 }
 
 class SortedSetOrder[A: Order] extends Order[SortedSet[A]] {
-  def compare(a1: SortedSet[A], a2: SortedSet[A]): Int =
-    cats.kernel.instances.int.catsKernelStdOrderForInt.compare(a1.size, a2.size) match {
-      case 0 => StaticMethods.iteratorCompare(a1.iterator, a2.iterator)
-      case x => x
-    }
+  def compare(a1: SortedSet[A], a2: SortedSet[A]): Int = ???
 
   override def eqv(s1: SortedSet[A], s2: SortedSet[A]): Boolean =
     StaticMethods.iteratorEq(s1.iterator, s2.iterator)
@@ -47,7 +43,7 @@ class SortedSetHash[A](implicit hashA: Hash[A]) extends Hash[SortedSet[A]] {
       val h = Hash[A].hash(x)
       a += h
       b ^= h
-      c = cats.kernel.instances.StaticMethods.updateUnorderedHashC(c, h)
+      c = ???
       n += 1
     }
     var h = setSeed
