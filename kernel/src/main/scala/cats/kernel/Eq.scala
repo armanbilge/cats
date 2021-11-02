@@ -2,8 +2,6 @@ package cats.kernel
 
 import java.util.UUID
 
-import cats.kernel.compat.scalaVersionSpecific._
-
 import scala.collection.immutable.{BitSet, Queue, Seq, SortedMap, SortedSet}
 import scala.concurrent.duration.{Duration, FiniteDuration}
 import scala.math.Equiv
@@ -37,5 +35,4 @@ abstract class EqFunctions[E[T] <: Eq[T]] {
 
 }
 
-@suppressUnusedImportWarningForScalaVersionSpecific
 object Eq extends instances.TupleOrderInstances 

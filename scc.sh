@@ -1,2 +1,2 @@
 shopt -s globstar
-scala3-compiler -J-verbose:gc -J-Xmx1G -J-XX:+HeapDumpOnOutOfMemoryError -J-XX:HeapDumpPath=dump.hprof -Ykind-projector:underscores kernel/src/main/scala/**/*.scala kernel/src/main/scala-2.13+/**/*.scala
+scala3-compiler -J-verbose:gc -J-Xmx1G -J-XX:+HeapDumpOnOutOfMemoryError -J-XX:HeapDumpPath=dump.hprof -Ykind-projector:underscores kernel/src/main/scala/**/*.scala 
