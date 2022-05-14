@@ -139,8 +139,16 @@ import simulacrum.typeclass
    * Akin to [[map]], but also provides the value's index in structure
    * F when calling the function.
    */
+  @deprecated("Use mapWithLongIndex", "2.8.0")
   def mapWithIndex[A, B](fa: F[A])(f: (A, Int) => B): F[B] =
     traverse(fa)(a => State((s: Int) => (s + 1, f(a, s)))).runA(0).value
+
+  /**
+   * Akin to [[map]], but also provides the value's index in structure
+   * F when calling the function.
+   */
+  def mapWithLongIndex[A, B](fa: F[A])(f: (A, Long) => B): F[B] =
+    traverse(fa)(a => State((s: Long) => (s + 1, f(a, s)))).runA(0).value
 
   /**
    * Akin to [[traverse]], but also provides the value's index in
@@ -150,8 +158,20 @@ import simulacrum.typeclass
    * effect G is monadic. An applicative traversal can be performed in
    * two passes using [[zipWithIndex]] followed by [[traverse]].
    */
+  @deprecated("Use traverseWithLongIndexM", "2.8.0")
   def traverseWithIndexM[G[_], A, B](fa: F[A])(f: (A, Int) => G[B])(implicit G: Monad[G]): G[F[B]] =
     traverse(fa)(a => StateT((s: Int) => G.map(f(a, s))(b => (s + 1, b)))).runA(0)
+
+  /**
+   * Akin to [[traverse]], but also provides the value's index in
+   * structure F when calling the function.
+   *
+   * This performs the traversal in a single pass but requires that
+   * effect G is monadic. An applicative traversal can be performed in
+   * two passes using [[zipWithLongIndex]] followed by [[traverse]].
+   */
+  def traverseWithLongIndexM[G[_], A, B](fa: F[A])(f: (A, Long) => G[B])(implicit G: Monad[G]): G[F[B]] =
+    traverse(fa)(a => StateT((s: Long) => G.map(f(a, s))(b => (s + 1, b)))).runA(0)
 
   /**
    * Traverses through the structure F, pairing the values with
@@ -160,8 +180,19 @@ import simulacrum.typeclass
    * The behavior is consistent with the Scala collection library's
    * `zipWithIndex` for collections such as `List`.
    */
+  @deprecated("Use zipWithLongIndex", "2.8.0")
   def zipWithIndex[A](fa: F[A]): F[(A, Int)] =
     mapWithIndex(fa)((a, i) => (a, i))
+
+  /**
+   * Traverses through the structure F, pairing the values with
+   * assigned indices.
+   *
+   * The behavior is consistent with the Scala collection library's
+   * `zipWithIndex` for collections such as `List`.
+   */
+  def zipWithLongIndex[A](fa: F[A]): F[(A, Long)] =
+    mapWithLongIndex(fa)((a, i) => (a, i))
 
   override def unorderedTraverse[G[_]: CommutativeApplicative, A, B](sa: F[A])(f: (A) => G[B]): G[F[B]] =
     traverse(sa)(f)
