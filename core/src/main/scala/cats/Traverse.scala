@@ -237,10 +237,17 @@ object Traverse {
       typeClassInstance.sequence[G, B](self.asInstanceOf[F[G[B]]])
     def flatSequence[G[_], B](implicit ev$1: A <:< G[F[B]], G: Applicative[G], F: FlatMap[F]): G[F[B]] =
       typeClassInstance.flatSequence[G, B](self.asInstanceOf[F[G[F[B]]]])(G, F)
+    @deprecated("Use mapWithLongIndex", "2.8.0")
     def mapWithIndex[B](f: (A, Int) => B): F[B] = typeClassInstance.mapWithIndex[A, B](self)(f)
+    def mapWithLongIndex[B](f: (A, Long) => B): F[B] = typeClassInstance.mapWithLongIndex[A, B](self)(f)
+    @deprecated("Use traverseWithLongIndexM", "2.8.0")
     def traverseWithIndexM[G[_], B](f: (A, Int) => G[B])(implicit G: Monad[G]): G[F[B]] =
       typeClassInstance.traverseWithIndexM[G, A, B](self)(f)(G)
+    def traverseWithLongIndexM[G[_], B](f: (A, Long) => G[B])(implicit G: Monad[G]): G[F[B]] =
+      typeClassInstance.traverseWithLongIndexM[G, A, B](self)(f)(G)
+    @deprecated("Use zipWithLongIndex", "2.8.0")
     def zipWithIndex: F[(A, Int)] = typeClassInstance.zipWithIndex[A](self)
+    def zipWithLongIndex: F[(A, Long)] = typeClassInstance.zipWithLongIndex[A](self)
   }
   trait AllOps[F[_], A]
       extends Ops[F, A]
