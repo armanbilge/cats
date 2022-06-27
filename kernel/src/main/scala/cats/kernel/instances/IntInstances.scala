@@ -49,8 +49,9 @@ trait IntBounded extends LowerBounded[Int] with UpperBounded[Int] {
 
 class IntOrder extends Order[Int] with Hash[Int] with IntBounded with IntEnumerable { self =>
   def hash(x: Int): Int = x.hashCode()
-  extension (x: Int) def compare(y: Int): Int =
-    if (x < y) -1 else if (x > y) 1 else 0
+  extension (x: Int)
+    def compare(y: Int): Int =
+      if (x < y) -1 else if (x > y) 1 else 0
 
   override def eqv(x: Int, y: Int): Boolean = x == y
   override def neqv(x: Int, y: Int): Boolean = x != y

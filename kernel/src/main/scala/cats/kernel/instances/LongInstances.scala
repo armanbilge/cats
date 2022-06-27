@@ -52,8 +52,9 @@ class LongOrder extends Order[Long] with Hash[Long] with LongBounded with LongEn
   def hash(x: Long): Int = x.hashCode()
 
   // use java.lang.Long.compare if we can rely on java >= 1.7
-  extension (x: Long) def compare(y: Long): Int =
-    if (x < y) -1 else if (x > y) 1 else 0
+  extension (x: Long)
+    def compare(y: Long): Int =
+      if (x < y) -1 else if (x > y) 1 else 0
 
   override def eqv(x: Long, y: Long): Boolean = x == y
   override def neqv(x: Long, y: Long): Boolean = x != y

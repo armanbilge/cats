@@ -38,8 +38,9 @@ class SymbolOrder extends Order[Symbol] with Hash[Symbol] with SymbolLowerBounde
     // Symbols are interned
     x eq y
 
-  extension (x: Symbol) def compare(y: Symbol): Int =
-    if (x eq y) 0 else x.name.compareTo(y.name)
+  extension (x: Symbol)
+    def compare(y: Symbol): Int =
+      if (x eq y) 0 else x.name.compareTo(y.name)
 
   override val partialOrder: PartialOrder[Symbol] = self
 }

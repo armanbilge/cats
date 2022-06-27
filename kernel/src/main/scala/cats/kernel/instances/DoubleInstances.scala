@@ -37,8 +37,9 @@ class DoubleGroup extends CommutativeGroup[Double] {
 class DoubleOrder extends Order[Double] with Hash[Double] {
 
   def hash(x: Double): Int = x.hashCode()
-  extension (x: Double) def compare(y: Double): Int =
-    java.lang.Double.compare(x, y)
+  extension (x: Double)
+    def compare(y: Double): Int =
+      java.lang.Double.compare(x, y)
 
   override def eqv(x: Double, y: Double): Boolean = x == y
   override def neqv(x: Double, y: Double): Boolean = x != y

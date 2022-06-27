@@ -38,8 +38,9 @@ trait DeadlineBounded extends LowerBounded[Deadline] with UpperBounded[Deadline]
 class DeadlineOrder extends Order[Deadline] with Hash[Deadline] with DeadlineBounded { self =>
 
   def hash(x: Deadline): Int = x.hashCode()
-  extension (x: Deadline) def compare(y: Deadline): Int =
-    if (x == y) 0 else if (x > y) 1 else -1
+  extension (x: Deadline)
+    def compare(y: Deadline): Int =
+      if (x == y) 0 else if (x > y) 1 else -1
 
   override def eqv(x: Deadline, y: Deadline): Boolean = x == y
   override def neqv(x: Deadline, y: Deadline): Boolean = x != y

@@ -62,11 +62,12 @@ private[instances] trait SortedSetInstances1 {
 }
 
 class SortedSetOrder[A: Order] extends Order[SortedSet[A]] {
-  extension (a1: SortedSet[A]) def compare(a2: SortedSet[A]): Int =
-    cats.kernel.instances.int.catsKernelStdOrderForInt.compare(a1.size)(a2.size) match {
-      case 0 => StaticMethods.iteratorCompare(a1.iterator, a2.iterator)
-      case x => x
-    }
+  extension (a1: SortedSet[A])
+    def compare(a2: SortedSet[A]): Int =
+      cats.kernel.instances.int.catsKernelStdOrderForInt.compare(a1.size)(a2.size) match {
+        case 0 => StaticMethods.iteratorCompare(a1.iterator, a2.iterator)
+        case x => x
+      }
 
   override def eqv(s1: SortedSet[A], s2: SortedSet[A]): Boolean =
     StaticMethods.iteratorEq(s1.iterator, s2.iterator)

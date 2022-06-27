@@ -179,11 +179,12 @@ object Order extends OrderFunctions[Order] with OrderToOrderingConversion {
    */
   def whenEqual[@sp A](first: Order[A], second: Order[A]): Order[A] =
     new Order[A] {
-      extension (x: A) def compare(y: A) = {
-        val c = first.compare(x)(y)
-        if (c == 0) second.compare(x)(y)
-        else c
-      }
+      extension (x: A)
+        def compare(y: A) = {
+          val c = first.compare(x)(y)
+          if (c == 0) second.compare(x)(y)
+          else c
+        }
     }
 
   /**
@@ -199,8 +200,9 @@ object Order extends OrderFunctions[Order] with OrderToOrderingConversion {
    */
   def fromLessThan[@sp A](f: (A, A) => Boolean): Order[A] =
     new Order[A] {
-      extension (x: A) def compare(y: A): Int =
-        if (f(x, y)) -1 else if (f(y, x)) 1 else 0
+      extension (x: A)
+        def compare(y: A): Int =
+          if (f(x, y)) -1 else if (f(y, x)) 1 else 0
 
       // Overridden for performance (avoids multiple comparisons)
       override def eqv(x: A, y: A): Boolean = !(f(x, y) || f(y, x))
@@ -249,7 +251,8 @@ object Order extends OrderFunctions[Order] with OrderToOrderingConversion {
 
   def fromComparable[A <: Comparable[A]]: Order[A] =
     new Order[A] {
-      extension (x: A) def compare(y: A): Int =
-        x.compareTo(y)
+      extension (x: A)
+        def compare(y: A): Int =
+          x.compareTo(y)
     }
 }

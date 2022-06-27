@@ -38,8 +38,9 @@ class StringOrder extends Order[String] with Hash[String] with StringLowerBounde
 
   override def eqv(x: String, y: String): Boolean =
     x == y
-  extension (x: String) def compare(y: String): Int =
-    if (x eq y) 0 else x.compareTo(y)
+  extension (x: String)
+    def compare(y: String): Int =
+      if (x eq y) 0 else x.compareTo(y)
 
   override val partialOrder: PartialOrder[String] = self
 }

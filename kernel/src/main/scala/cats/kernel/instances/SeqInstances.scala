@@ -47,9 +47,10 @@ private[instances] trait SeqInstances2 {
 }
 
 class SeqOrder[A](implicit ev: Order[A]) extends Order[Seq[A]] {
-  extension (xs: Seq[A]) def compare(ys: Seq[A]): Int =
-    if (xs eq ys) 0
-    else StaticMethods.iteratorCompare(xs.iterator, ys.iterator)
+  extension (xs: Seq[A])
+    def compare(ys: Seq[A]): Int =
+      if (xs eq ys) 0
+      else StaticMethods.iteratorCompare(xs.iterator, ys.iterator)
 }
 
 class SeqPartialOrder[A](implicit ev: PartialOrder[A]) extends PartialOrder[Seq[A]] {

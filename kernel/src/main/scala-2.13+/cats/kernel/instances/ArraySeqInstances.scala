@@ -50,19 +50,20 @@ object ArraySeqInstances {
   }
 
   final private class ArraySeqOrder[A](implicit ev: Order[A]) extends Order[ArraySeq[A]] {
-    extension (xs: ArraySeq[A]) final def compare(ys: ArraySeq[A]): Int = {
-      @tailrec def loop(i: Int): Int =
-        (i < xs.length, i < ys.length) match {
-          case (true, true) =>
-            val n = ev.compare(xs(i))(ys(i))
-            if (n != 0) n else loop(i + 1)
-          case (true, false)  => 1
-          case (false, true)  => -1
-          case (false, false) => 0
-        }
+    extension (xs: ArraySeq[A])
+      final def compare(ys: ArraySeq[A]): Int = {
+        @tailrec def loop(i: Int): Int =
+          (i < xs.length, i < ys.length) match {
+            case (true, true) =>
+              val n = ev.compare(xs(i))(ys(i))
+              if (n != 0) n else loop(i + 1)
+            case (true, false)  => 1
+            case (false, true)  => -1
+            case (false, false) => 0
+          }
 
-      if (xs eq ys) 0 else loop(i = 0)
-    }
+        if (xs eq ys) 0 else loop(i = 0)
+      }
   }
 
   private class ArraySeqPartialOrder[A](implicit ev: PartialOrder[A]) extends PartialOrder[ArraySeq[A]] {

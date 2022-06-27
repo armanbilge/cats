@@ -43,9 +43,10 @@ private[instances] trait LazyListInstances2 {
 }
 
 class LazyListOrder[A](implicit ev: Order[A]) extends Order[LazyList[A]] {
-  extension (xs: LazyList[A]) def compare(ys: LazyList[A]): Int =
-    if (xs eq ys) 0
-    else StaticMethods.iteratorCompare(xs.iterator, ys.iterator)
+  extension (xs: LazyList[A])
+    def compare(ys: LazyList[A]): Int =
+      if (xs eq ys) 0
+      else StaticMethods.iteratorCompare(xs.iterator, ys.iterator)
 }
 
 class LazyListPartialOrder[A](implicit ev: PartialOrder[A]) extends PartialOrder[LazyList[A]] {

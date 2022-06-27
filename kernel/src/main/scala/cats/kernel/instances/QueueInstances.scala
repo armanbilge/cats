@@ -47,9 +47,10 @@ private[instances] trait QueueInstances2 {
 }
 
 class QueueOrder[A](implicit ev: Order[A]) extends Order[Queue[A]] {
-  extension (xs: Queue[A]) def compare(ys: Queue[A]): Int =
-    if (xs eq ys) 0
-    else StaticMethods.iteratorCompare(xs.iterator, ys.iterator)
+  extension (xs: Queue[A])
+    def compare(ys: Queue[A]): Int =
+      if (xs eq ys) 0
+      else StaticMethods.iteratorCompare(xs.iterator, ys.iterator)
 }
 
 class QueueHash[A](implicit ev: Hash[A]) extends QueueEq[A] with Hash[Queue[A]] {
