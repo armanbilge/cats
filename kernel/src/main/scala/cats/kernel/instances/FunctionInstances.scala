@@ -30,7 +30,7 @@ trait FunctionInstances extends FunctionInstances0 {
 
   implicit def catsKernelOrderForFunction0[A](implicit ev: Order[A]): Order[() => A] =
     new Order[() => A] {
-      def compare(x: () => A, y: () => A): Int = ev.compare(x(), y())
+      extension (x: () => A) def compare(y: () => A): Int = ev.compare(x())(y())
     }
 
   implicit def catsKernelCommutativeGroupForFunction0[A](implicit G: CommutativeGroup[A]): CommutativeGroup[() => A] =

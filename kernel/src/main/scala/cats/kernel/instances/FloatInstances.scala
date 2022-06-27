@@ -49,7 +49,7 @@ class FloatOrder extends Order[Float] with Hash[Float] {
 
   def hash(x: Float): Int = x.hashCode()
 
-  def compare(x: Float, y: Float): Int =
+  extension (x: Float) def compare(y: Float): Int =
     java.lang.Float.compare(x, y)
 
   override def eqv(x: Float, y: Float): Boolean = x == y

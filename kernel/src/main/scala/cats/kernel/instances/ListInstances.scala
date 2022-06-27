@@ -47,7 +47,7 @@ private[instances] trait ListInstances2 {
 }
 
 class ListOrder[A](implicit ev: Order[A]) extends Order[List[A]] {
-  def compare(xs: List[A], ys: List[A]): Int = {
+  extension (xs: List[A]) def compare(ys: List[A]): Int = {
     @tailrec def loop(xs: List[A], ys: List[A]): Int =
       xs match {
         case Nil =>
@@ -56,7 +56,7 @@ class ListOrder[A](implicit ev: Order[A]) extends Order[List[A]] {
           ys match {
             case Nil => 1
             case y :: ys =>
-              val n = ev.compare(x, y)
+              val n = ev.compare(x)(y)
               if (n != 0) n else loop(xs, ys)
           }
       }

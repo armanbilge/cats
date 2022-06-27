@@ -26,17 +26,17 @@ trait EitherInstances extends EitherInstances0 {
 
   implicit def catsStdOrderForEither[A, B](implicit A: Order[A], B: Order[B]): Order[Either[A, B]] =
     new Order[Either[A, B]] {
-      def compare(x: Either[A, B], y: Either[A, B]): Int =
+      extension (x: Either[A, B]) def compare(y: Either[A, B]): Int =
         x match {
           case Left(xx) =>
             y match {
-              case Left(yy) => A.compare(xx, yy)
+              case Left(yy) => A.compare(xx)(yy)
               case Right(_) => -1
             }
           case Right(xx) =>
             y match {
               case Left(_)   => 1
-              case Right(yy) => B.compare(xx, yy)
+              case Right(yy) => B.compare(xx)(yy)
             }
         }
     }

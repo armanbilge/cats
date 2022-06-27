@@ -49,7 +49,7 @@ private[instances] trait StreamInstances2 {
 
 @deprecated("Use cats.kernel.instances.lazyList", "2.0.0-RC2")
 class StreamOrder[A](implicit ev: Order[A]) extends Order[Stream[A]] {
-  def compare(xs: Stream[A], ys: Stream[A]): Int =
+  extension (xs: Stream[A]) def compare(ys: Stream[A]): Int =
     if (xs eq ys) 0
     else StaticMethods.iteratorCompare(xs.iterator, ys.iterator)
 }

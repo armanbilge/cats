@@ -46,7 +46,7 @@ trait DurationBounded extends LowerBounded[Duration] with UpperBounded[Duration]
 class DurationOrder extends Order[Duration] with Hash[Duration] with DurationBounded { self =>
   def hash(x: Duration): Int = x.hashCode()
 
-  def compare(x: Duration, y: Duration): Int = x.compare(y)
+  extension (x: Duration) def compare(y: Duration): Int = x.compare(y)
 
   override def eqv(x: Duration, y: Duration): Boolean = x == y
   override def neqv(x: Duration, y: Duration): Boolean = x != y

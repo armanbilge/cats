@@ -50,7 +50,7 @@ class ShortOrder extends Order[Short] with Hash[Short] with ShortBounded with Sh
 
   def hash(x: Short): Int = x.hashCode()
   // use java.lang.Short.compare if we can rely on java >= 1.7
-  def compare(x: Short, y: Short): Int =
+  extension (x: Short) def compare(y: Short): Int =
     if (x < y) -1 else if (x > y) 1 else 0
 
   override def eqv(x: Short, y: Short): Boolean = x == y

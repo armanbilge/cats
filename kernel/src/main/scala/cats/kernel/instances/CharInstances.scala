@@ -40,7 +40,7 @@ trait CharBounded extends LowerBounded[Char] with UpperBounded[Char] {
 
 class CharOrder extends Order[Char] with Hash[Char] with CharBounded with CharEnumerable { self =>
   def hash(x: Char): Int = x.hashCode()
-  def compare(x: Char, y: Char): Int =
+  extension (x: Char) def compare(y: Char): Int =
     if (x < y) -1 else if (x > y) 1 else 0
   override def eqv(x: Char, y: Char): Boolean = x == y
   override def neqv(x: Char, y: Char): Boolean = x != y

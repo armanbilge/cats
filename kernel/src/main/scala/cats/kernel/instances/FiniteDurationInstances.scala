@@ -42,7 +42,7 @@ trait FiniteDurationBounded extends LowerBounded[FiniteDuration] with UpperBound
 class FiniteDurationOrder extends Order[FiniteDuration] with Hash[FiniteDuration] with FiniteDurationBounded { self =>
   def hash(x: FiniteDuration): Int = x.hashCode()
 
-  def compare(x: FiniteDuration, y: FiniteDuration): Int = x.compare(y)
+  extension (x: FiniteDuration) def compare(y: FiniteDuration): Int = x.compare(y)
 
   override def eqv(x: FiniteDuration, y: FiniteDuration): Boolean = x == y
   override def neqv(x: FiniteDuration, y: FiniteDuration): Boolean = x != y

@@ -49,7 +49,7 @@ class BigDecimalOrder extends Order[BigDecimal] with Hash[BigDecimal] {
 
   def hash(x: BigDecimal): Int = x.hashCode()
 
-  def compare(x: BigDecimal, y: BigDecimal): Int = x.compare(y)
+  extension (x: BigDecimal) def compare(y: BigDecimal): Int = x.compare(y)
 
   override def eqv(x: BigDecimal, y: BigDecimal): Boolean = x == y
   override def neqv(x: BigDecimal, y: BigDecimal): Boolean = x != y

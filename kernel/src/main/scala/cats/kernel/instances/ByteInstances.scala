@@ -51,7 +51,7 @@ class ByteOrder extends Order[Byte] with Hash[Byte] with ByteBounded with ByteEn
 
   def hash(x: Byte): Int = x.hashCode()
 
-  def compare(x: Byte, y: Byte): Int =
+  extension (x: Byte) def compare(y: Byte): Int =
     if (x < y) -1 else if (x > y) 1 else 0
 
   override def eqv(x: Byte, y: Byte): Boolean = x == y

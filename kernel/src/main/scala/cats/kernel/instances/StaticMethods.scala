@@ -82,7 +82,7 @@ object StaticMethods extends cats.kernel.compat.HashCompat {
         if (ys.hasNext) {
           val x = xs.next()
           val y = ys.next()
-          val cmp = ev.compare(x, y)
+          val cmp = ev.compare(x)(y)
           if (cmp != 0) return cmp
         } else {
           return 1

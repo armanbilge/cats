@@ -101,6 +101,12 @@ object KernelBoiler {
         s"${tpe}.${name}(x._${j}, y._${j})"
       }
 
+    def binCurriedMethod(name: String) =
+      synTypes.zipWithIndex.iterator.map { case (tpe, i) =>
+        val j = i + 1
+        s"${tpe}.${name}(x._${j})(y._${j})"
+      }
+
     def binTuple(name: String) =
       tuple(binMethod(name))
 
@@ -154,8 +160,8 @@ object KernelBoiler {
                 |    implicit ${constraints("Order")}
                 |  ): Order[${`(A..N)`}] =
                 |    new Order[${`(A..N)`}] {
-                |      def compare(x: ${`(A..N)`}, y: ${`(A..N)`}): Int =
-                |        ${binMethod("compare").mkString("Array(", ", ", ")")}.find(_ != 0).getOrElse(0)
+                |      extension (x: ${`(A..N)`}) def compare(y: ${`(A..N)`}): Int =
+                |        ${binCurriedMethod("compare").mkString("Array(", ", ", ")")}.find(_ != 0).getOrElse(0)
                 |    }
                 |  implicit def catsKernelStdBoundedSemilatticeForTuple${arity}[${`A..N`}](
                 |    implicit ${constraints("BoundedSemilattice")}
@@ -408,8 +414,8 @@ object KernelBoiler {
                 |  implicit def catsKernelOrderForTuple${arity}[${`A..N`}](
                 |    implicit ${constraints("Order")}
                 |  ): Order[${`(A..N)`}] = new Order[${`(A..N)`}] {
-                |    def compare(x: ${`(A..N)`}, y: ${`(A..N)`}): Int =
-                |      ${binMethod("compare").mkString("Array(", ", ", ")")}.find(_ != 0).getOrElse(0)
+                |    extension (x: ${`(A..N)`}) def compare(y: ${`(A..N)`}): Int =
+                |      ${binCurriedMethod("compare").mkString("Array(", ", ", ")")}.find(_ != 0).getOrElse(0)
                 |  }"""
             }
         ),

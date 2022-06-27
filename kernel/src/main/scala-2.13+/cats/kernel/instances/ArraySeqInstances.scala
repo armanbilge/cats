@@ -50,11 +50,11 @@ object ArraySeqInstances {
   }
 
   final private class ArraySeqOrder[A](implicit ev: Order[A]) extends Order[ArraySeq[A]] {
-    final def compare(xs: ArraySeq[A], ys: ArraySeq[A]): Int = {
+    extension (xs: ArraySeq[A]) final def compare(ys: ArraySeq[A]): Int = {
       @tailrec def loop(i: Int): Int =
         (i < xs.length, i < ys.length) match {
           case (true, true) =>
-            val n = ev.compare(xs(i), ys(i))
+            val n = ev.compare(xs(i))(ys(i))
             if (n != 0) n else loop(i + 1)
           case (true, false)  => 1
           case (false, true)  => -1

@@ -47,14 +47,14 @@ private[instances] trait OptionInstances2 {
 }
 
 class OptionOrder[A](implicit A: Order[A]) extends Order[Option[A]] {
-  def compare(x: Option[A], y: Option[A]): Int =
+  extension (x: Option[A]) def compare(y: Option[A]): Int =
     x match {
       case None =>
         if (y.isEmpty) 0 else -1
       case Some(a) =>
         y match {
           case None    => 1
-          case Some(b) => A.compare(a, b)
+          case Some(b) => A.compare(a)(b)
         }
     }
 }

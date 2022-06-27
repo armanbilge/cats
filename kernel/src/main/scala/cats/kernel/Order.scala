@@ -48,25 +48,25 @@ trait Order[@sp A] extends Any with PartialOrder[A] { self =>
    * - zero     iff `x = y`
    * - positive iff `x > y`
    */
-  def compare(x: A, y: A): Int
+  extension (x: A) def compare(y: A): Int
 
   /**
    * Like `compare`, but returns a [[cats.kernel.Comparison]] instead of an Int.
    * Has the benefit of being able to pattern match on, but not as performant.
    */
-  def comparison(x: A, y: A): Comparison = Comparison.fromInt(compare(x, y))
+  extension (x: A) def comparison(y: A): Comparison = Comparison.fromInt(x.compare(y))
 
-  def partialCompare(x: A, y: A): Double = compare(x, y).toDouble
+  def partialCompare(x: A, y: A): Double = compare(x)(y).toDouble
 
   /**
    * If x < y, return x, else return y.
    */
-  def min(x: A, y: A): A = if (lt(x, y)) x else y
+  extension (x: A) def min(y: A): A = if (lt(x, y)) x else y
 
   /**
    * If x > y, return x, else return y.
    */
-  def max(x: A, y: A): A = if (gt(x, y)) x else y
+  extension (x: A) def max(y: A): A = if (gt(x, y)) x else y
 
   // The following may be overridden for performance:
 
@@ -74,7 +74,7 @@ trait Order[@sp A] extends Any with PartialOrder[A] { self =>
    * Returns true if `x` = `y`, false otherwise.
    */
   override def eqv(x: A, y: A): Boolean =
-    compare(x, y) == 0
+    compare(x)(y) == 0
 
   /**
    * Returns true if `x` != `y`, false otherwise.
@@ -90,25 +90,25 @@ trait Order[@sp A] extends Any with PartialOrder[A] { self =>
    * Returns true if `x` <= `y`, false otherwise.
    */
   override def lteqv(x: A, y: A): Boolean =
-    compare(x, y) <= 0
+    compare(x)(y) <= 0
 
   /**
    * Returns true if `x` < `y`, false otherwise.
    */
   override def lt(x: A, y: A): Boolean =
-    compare(x, y) < 0
+    compare(x)(y) < 0
 
   /**
    * Returns true if `x` >= `y`, false otherwise.
    */
   override def gteqv(x: A, y: A): Boolean =
-    compare(x, y) >= 0
+    compare(x)(y) >= 0
 
   /**
    * Returns true if `x` > `y`, false otherwise.
    */
   override def gt(x: A, y: A): Boolean =
-    compare(x, y) > 0
+    compare(x)(y) > 0
 
   /**
    * Convert a `Order[A]` to a `scala.math.Ordering[A]`
@@ -116,23 +116,23 @@ trait Order[@sp A] extends Any with PartialOrder[A] { self =>
    */
   def toOrdering: Ordering[A] =
     new Ordering[A] {
-      def compare(x: A, y: A): Int = self.compare(x, y)
+      def compare(x: A, y: A): Int = self.compare(x)(y)
     }
 }
 
 abstract class OrderFunctions[O[T] <: Order[T]] extends PartialOrderFunctions[O] {
 
   def compare[@sp A](x: A, y: A)(implicit ev: O[A]): Int =
-    ev.compare(x, y)
+    ev.compare(x)(y)
 
   def min[@sp A](x: A, y: A)(implicit ev: O[A]): A =
-    ev.min(x, y)
+    ev.min(x)(y)
 
   def max[@sp A](x: A, y: A)(implicit ev: O[A]): A =
-    ev.max(x, y)
+    ev.max(x)(y)
 
   def comparison[@sp A](x: A, y: A)(implicit ev: O[A]): Comparison =
-    ev.comparison(x, y)
+    ev.comparison(x)(y)
 }
 
 trait OrderToOrderingConversion {
@@ -159,7 +159,7 @@ object Order extends OrderFunctions[Order] with OrderToOrderingConversion {
    */
   def by[@sp A, @sp B](f: A => B)(implicit ev: Order[B]): Order[A] =
     new Order[A] {
-      def compare(x: A, y: A): Int = ev.compare(f(x), f(y))
+      extension (x: A) def compare(y: A): Int = ev.compare(f(x))(f(y))
     }
 
   /**
@@ -167,7 +167,7 @@ object Order extends OrderFunctions[Order] with OrderToOrderingConversion {
    */
   def reverse[@sp A](order: Order[A]): Order[A] =
     new Order[A] {
-      def compare(x: A, y: A): Int = order.compare(y, x)
+      extension (x: A) def compare(y: A): Int = order.compare(y)(x)
     }
 
   /**
@@ -179,9 +179,9 @@ object Order extends OrderFunctions[Order] with OrderToOrderingConversion {
    */
   def whenEqual[@sp A](first: Order[A], second: Order[A]): Order[A] =
     new Order[A] {
-      def compare(x: A, y: A) = {
-        val c = first.compare(x, y)
-        if (c == 0) second.compare(x, y)
+      extension (x: A) def compare(y: A) = {
+        val c = first.compare(x)(y)
+        if (c == 0) second.compare(x)(y)
         else c
       }
     }
@@ -191,7 +191,7 @@ object Order extends OrderFunctions[Order] with OrderToOrderingConversion {
    */
   def from[@sp A](f: (A, A) => Int): Order[A] =
     new Order[A] {
-      def compare(x: A, y: A) = f(x, y)
+      extension (x: A) def compare(y: A) = f(x, y)
     }
 
   /**
@@ -199,7 +199,7 @@ object Order extends OrderFunctions[Order] with OrderToOrderingConversion {
    */
   def fromLessThan[@sp A](f: (A, A) => Boolean): Order[A] =
     new Order[A] {
-      override def compare(x: A, y: A): Int =
+      extension (x: A) def compare(y: A): Int =
         if (f(x, y)) -1 else if (f(y, x)) 1 else 0
 
       // Overridden for performance (avoids multiple comparisons)
@@ -216,7 +216,7 @@ object Order extends OrderFunctions[Order] with OrderToOrderingConversion {
    */
   def allEqual[A]: Order[A] =
     new Order[A] {
-      def compare(x: A, y: A): Int = 0
+      extension (x: A) def compare(y: A): Int = 0
     }
 
   /**
@@ -242,14 +242,14 @@ object Order extends OrderFunctions[Order] with OrderToOrderingConversion {
 
   def fromOrdering[A](implicit ev: Ordering[A]): Order[A] =
     new Order[A] {
-      def compare(x: A, y: A): Int = ev.compare(x, y)
+      extension (x: A) def compare(y: A): Int = ev.compare(x, y)
 
       override def toOrdering: Ordering[A] = ev
     }
 
   def fromComparable[A <: Comparable[A]]: Order[A] =
     new Order[A] {
-      override def compare(x: A, y: A): Int =
+      extension (x: A) def compare(y: A): Int =
         x.compareTo(y)
     }
 }

@@ -43,7 +43,7 @@ trait UnitBounded extends LowerBounded[Unit] with UpperBounded[Unit] {
 }
 
 class UnitOrder extends Order[Unit] with Hash[Unit] with UnitBounded with UnitEnumerable { self =>
-  def compare(x: Unit, y: Unit): Int = 0
+  extension (x: Unit) def compare(y: Unit): Int = 0
 
   def hash(x: Unit): Int = 0 // ().hashCode() == 0
 

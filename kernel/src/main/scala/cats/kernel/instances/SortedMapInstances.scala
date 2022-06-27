@@ -87,7 +87,7 @@ private[instances] trait SortedMapInstances3 extends SortedMapInstances2 {
 }
 
 private[instances] class SortedMapOrder[K, V](implicit V: Order[V]) extends Order[SortedMap[K, V]] {
-  override def compare(x: SortedMap[K, V], y: SortedMap[K, V]): Int = {
+  extension (x: SortedMap[K, V]) def compare(y: SortedMap[K, V]): Int = {
     implicit val order: Order[K] = Order.fromOrdering(x.ordering)
     if (x eq y) {
       0

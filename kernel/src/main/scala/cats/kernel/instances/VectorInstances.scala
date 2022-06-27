@@ -45,7 +45,7 @@ private[instances] trait VectorInstances2 {
 }
 
 class VectorOrder[A](implicit ev: Order[A]) extends Order[Vector[A]] {
-  def compare(xs: Vector[A], ys: Vector[A]): Int =
+  extension (xs: Vector[A]) def compare(ys: Vector[A]): Int =
     if (xs eq ys) 0
     else StaticMethods.iteratorCompare(xs.iterator, ys.iterator)
 }
