@@ -122,6 +122,16 @@ class ListSuite extends CatsSuite {
 
     assert(sumAll == lst.sum)
   }
+
+  test("list traverse list".only) {
+    // cheating!!!
+    implicit val listMonad: Monad[List] = new cats.StackSafeMonad[List] {
+      def pure[A](a: A) = List(a)
+      def flatMap[A, B](la: List[A])(f: A => List[B]) = la.flatMap(f)
+    }
+    val traversed = Traverse[List].traverse(List(()))(_ => List((), ()))
+    assertEquals(traversed, List(List(()), List(())))
+  }
 }
 
 final class ListInstancesSuite extends munit.FunSuite {
