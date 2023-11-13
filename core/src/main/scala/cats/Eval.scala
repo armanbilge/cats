@@ -22,6 +22,7 @@
 package cats
 
 import org.typelevel.scalaccompat.annotation.uncheckedVariance2
+import org.typelevel.scalaccompat.annotation.threadUnsafe3
 
 import scala.annotation.tailrec
 
@@ -479,6 +480,7 @@ trait EvalSemigroup[A] extends Semigroup[Eval[A]] {
 
 trait EvalMonoid[A] extends Monoid[Eval[A]] with EvalSemigroup[A] {
   implicit def algebra: Monoid[A]
+  @threadUnsafe3
   lazy val empty: Eval[A] = Eval.later(algebra.empty)
 }
 

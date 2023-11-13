@@ -22,6 +22,7 @@
 package cats.data
 
 import cats.{Comonad, Functor, Representable}
+import org.typelevel.scalaccompat.annotation.threadUnsafe3
 
 /**
  * A generalization of `StoreT`, where the underlying functor `F` has a `Representable` instance.
@@ -53,12 +54,14 @@ final case class RepresentableStore[F[_], S, A](fa: F[A], index: S)(implicit R: 
   /**
    * Extract the value at the current index.
    */
+  @threadUnsafe3
   lazy val extract: A = peek(index)
 
   /**
    * `coflatten` is the dual of `flatten` on `FlatMap`. Whereas flatten removes
    * a layer of `F`, coflatten adds a layer of `F`
    */
+  @threadUnsafe3
   lazy val coflatten: RepresentableStore[F, S, RepresentableStore[F, S, A]] =
     RepresentableStore(R.tabulate(idx => RepresentableStore(fa, idx)), index)
 

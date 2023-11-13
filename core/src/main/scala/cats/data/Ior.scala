@@ -24,6 +24,7 @@ package data
 
 import cats.arrow.FunctionK
 import cats.data.Validated.{Invalid, Valid}
+import org.typelevel.scalaccompat.annotation.threadUnsafe3
 
 import scala.annotation.tailrec
 
@@ -946,6 +947,7 @@ sealed abstract private[data] class IorInstances extends IorInstances0 {
           }
       }
 
+      @threadUnsafe3
       lazy val monad: Monad[Ior[E, *]] = Monad[Ior[E, *]]
     }
 

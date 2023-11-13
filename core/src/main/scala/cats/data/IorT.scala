@@ -23,6 +23,7 @@ package cats
 package data
 
 import cats.arrow.FunctionK
+import org.typelevel.scalaccompat.annotation.threadUnsafe3
 
 final case class IorT[F[_], A, B](value: F[Ior[A, B]]) {
 
@@ -533,6 +534,7 @@ abstract private[data] class IorTInstances extends IorTInstances1 {
           IorT(FA.map2(ff.value, fa.value)((f, a) => IorA.ap(f)(a)))
       }
 
+      @threadUnsafe3
       lazy val monad: Monad[IorT[M, E, *]] = {
         implicit def underlyingMonadM: Monad[M] = P.monad
         Monad[IorT[M, E, *]]
@@ -566,6 +568,7 @@ abstract private[data] class IorTInstances extends IorTInstances1 {
           IorT(FA.map2(ff.value, fa.value)((f, a) => IorA.ap(f)(a)))
       }
 
+      @threadUnsafe3
       lazy val monad: Monad[IorT[M, E, *]] = {
         implicit def underlyingMonadM: Monad[M] = P.monad
         Monad[IorT[M, E, *]]
@@ -611,6 +614,7 @@ abstract private[data] class IorTInstances1 extends IorTInstances2 {
           IorT(F.map2(ff.value, fa.value)((f, a) => underlyingParallel.applicative.ap[A, B](f)(a)))
       }
 
+      @threadUnsafe3
       lazy val monad: Monad[IorT[F0, E, *]] = Monad[IorT[F0, E, *]]
     }
 

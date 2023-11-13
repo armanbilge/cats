@@ -22,6 +22,8 @@
 package cats
 package instances
 
+import org.typelevel.scalaccompat.annotation.threadUnsafe3
+
 import scala.annotation.tailrec
 
 trait EqInstances extends kernel.instances.EqInstances {
@@ -52,6 +54,7 @@ object EqInstances {
   private val catsDeferForEqCache: Defer[Eq] =
     new Defer[Eq] {
       case class Deferred[A](fa: () => Eq[A]) extends Eq[A] {
+        @threadUnsafe3
         private lazy val resolved: Eq[A] = {
           @tailrec
           def loop(f: () => Eq[A]): Eq[A] =
@@ -66,7 +69,7 @@ object EqInstances {
       }
 
       override def defer[A](fa: => Eq[A]): Eq[A] = {
-        lazy val cachedFa = fa
+        @threadUnsafe3 lazy val cachedFa = fa
         Deferred(() => cachedFa)
       }
     }

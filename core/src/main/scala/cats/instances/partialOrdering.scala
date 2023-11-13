@@ -22,6 +22,8 @@
 package cats
 package instances
 
+import org.typelevel.scalaccompat.annotation.threadUnsafe3
+
 import scala.annotation.tailrec
 
 trait PartialOrderingInstances {
@@ -60,6 +62,7 @@ object PartialOrderingInstances {
   private val catsStdDeferForPartialOrderingCache: Defer[PartialOrdering] =
     new Defer[PartialOrdering] {
       case class Deferred[A](fa: () => PartialOrdering[A]) extends PartialOrdering[A] {
+        @threadUnsafe3
         private lazy val resolve: PartialOrdering[A] = {
           @tailrec
           def loop(f: () => PartialOrdering[A]): PartialOrdering[A] =
@@ -77,7 +80,7 @@ object PartialOrderingInstances {
       }
 
       override def defer[A](fa: => PartialOrdering[A]): PartialOrdering[A] = {
-        lazy val cachedFa = fa
+        @threadUnsafe3 lazy val cachedFa = fa
         Deferred(() => cachedFa)
       }
     }

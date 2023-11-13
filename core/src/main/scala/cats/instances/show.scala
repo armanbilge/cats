@@ -22,6 +22,8 @@
 package cats
 package instances
 
+import org.typelevel.scalaccompat.annotation.threadUnsafe3
+
 import scala.annotation.tailrec
 
 trait ShowInstances {
@@ -31,6 +33,7 @@ object ShowInstances {
   private val catsDeferForShowCache: Defer[Show] =
     new Defer[Show] {
       case class Deferred[A](fa: () => Show[A]) extends Show[A] {
+        @threadUnsafe3
         private lazy val resolved: Show[A] = {
           @tailrec
           def loop(f: () => Show[A]): Show[A] =
@@ -45,7 +48,7 @@ object ShowInstances {
       }
 
       override def defer[A](fa: => Show[A]): Show[A] = {
-        lazy val cachedFa = fa
+        @threadUnsafe3 lazy val cachedFa = fa
         Deferred(() => cachedFa)
       }
     }

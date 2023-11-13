@@ -22,6 +22,8 @@
 package cats
 package instances
 
+import org.typelevel.scalaccompat.annotation.threadUnsafe3
+
 import scala.annotation.tailrec
 
 trait HashInstances extends kernel.instances.HashInstances {
@@ -42,6 +44,7 @@ object HashInstances {
   private val catsDeferForHashCache: Defer[Hash] =
     new Defer[Hash] {
       case class Deferred[A](fa: () => Hash[A]) extends Hash[A] {
+        @threadUnsafe3
         private lazy val resolve: Hash[A] = {
           @tailrec
           def loop(f: () => Hash[A]): Hash[A] =
@@ -62,7 +65,7 @@ object HashInstances {
       }
 
       override def defer[A](fa: => Hash[A]): Hash[A] = {
-        lazy val cachedFa = fa
+        @threadUnsafe3 lazy val cachedFa = fa
         Deferred(() => cachedFa)
       }
     }

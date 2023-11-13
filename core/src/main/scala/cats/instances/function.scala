@@ -25,6 +25,7 @@ package instances
 import cats.Contravariant
 import cats.arrow.{ArrowChoice, Category, CommutativeArrow}
 import cats.data.AndThen
+import org.typelevel.scalaccompat.annotation.threadUnsafe3
 
 import annotation.tailrec
 
@@ -46,6 +47,7 @@ private[instances] trait FunctionInstancesBinCompat0 {
   implicit val catsSddDeferForFunction0: Defer[Function0] =
     new Defer[Function0] {
       case class Deferred[A](fa: () => Function0[A]) extends Function0[A] {
+        @threadUnsafe3
         private lazy val resolved: Function0[A] = {
           @annotation.tailrec
           def loop(f: () => Function0[A]): Function0[A] =
@@ -59,7 +61,7 @@ private[instances] trait FunctionInstancesBinCompat0 {
         def apply(): A = resolved()
       }
       def defer[A](fa: => Function0[A]): Function0[A] = {
-        lazy val cachedFa = fa
+        @threadUnsafe3 lazy val cachedFa = fa
         Deferred(() => cachedFa)
       }
     }
@@ -67,6 +69,7 @@ private[instances] trait FunctionInstancesBinCompat0 {
   implicit def catsStdDeferForFunction1[A]: Defer[A => *] =
     new Defer[A => *] {
       case class Deferred[B](fa: () => A => B) extends (A => B) {
+        @threadUnsafe3
         private lazy val resolved: A => B = {
           @annotation.tailrec
           def loop(f: () => A => B): A => B =
@@ -80,7 +83,7 @@ private[instances] trait FunctionInstancesBinCompat0 {
         def apply(a: A): B = resolved(a)
       }
       def defer[B](fa: => A => B): A => B = {
-        lazy val cachedFa = fa
+        @threadUnsafe3 lazy val cachedFa = fa
         Deferred(() => cachedFa)
       }
     }

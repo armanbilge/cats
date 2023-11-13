@@ -23,6 +23,7 @@ package cats
 package data
 
 import cats.arrow.FunctionK
+import org.typelevel.scalaccompat.annotation.threadUnsafe3
 
 /**
  * [[Tuple2K]] is a product to two independent functor values.
@@ -89,7 +90,7 @@ sealed abstract private[data] class Tuple2KInstances extends Tuple2KInstances0 {
     new Defer[Tuple2K[F, G, *]] {
       def defer[A](fa: => Tuple2K[F, G, A]): Tuple2K[F, G, A] = {
         // Make sure we only evaluate once on both the first and second
-        lazy val cacheFa = fa
+        @threadUnsafe3 lazy val cacheFa = fa
 
         Tuple2K(F.defer(cacheFa.first), G.defer(cacheFa.second))
       }

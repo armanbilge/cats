@@ -23,6 +23,7 @@ package cats
 package instances
 
 import cats.kernel.instances.unit._
+import org.typelevel.scalaccompat.annotation.threadUnsafe3
 
 import scala.annotation.tailrec
 
@@ -56,6 +57,7 @@ object OrderInstances {
   private val catsDeferForOrderCache: Defer[Order] =
     new Defer[Order] {
       case class Deferred[A](fa: () => Order[A]) extends Order[A] {
+        @threadUnsafe3
         private lazy val resolved: Order[A] = {
           @tailrec
           def loop(f: () => Order[A]): Order[A] =
@@ -70,7 +72,7 @@ object OrderInstances {
       }
 
       override def defer[A](fa: => Order[A]): Order[A] = {
-        lazy val cachedFa = fa
+        @threadUnsafe3 lazy val cachedFa = fa
         Deferred(() => cachedFa)
       }
     }

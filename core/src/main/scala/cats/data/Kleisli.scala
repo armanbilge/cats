@@ -25,6 +25,7 @@ package data
 import cats.{Contravariant, Id}
 import cats.arrow._
 import cats.evidence.As
+import org.typelevel.scalaccompat.annotation.threadUnsafe3
 
 /**
  * Represents a function `A => F[B]`.
@@ -372,7 +373,7 @@ sealed abstract private[data] class KleisliInstances extends KleisliInstances0 {
   implicit def catsDataDeferForKleisli[F[_], A](implicit F: Defer[F]): Defer[Kleisli[F, A, *]] =
     new Defer[Kleisli[F, A, *]] {
       def defer[B](fa: => Kleisli[F, A, B]): Kleisli[F, A, B] = {
-        lazy val cacheFa = fa
+        @threadUnsafe3 lazy val cacheFa = fa
         Kleisli[F, A, B] { a =>
           F.defer(cacheFa.run(a))
         }
