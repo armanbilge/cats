@@ -143,7 +143,7 @@
     <li class="level1 nav-leaf"><a href="jump_start_guide.html">Jump Start Guide</a></li>
     <li class="level1 nav-leaf"><a href="imports.html">Imports</a></li>
     <li class="level1 nav-leaf"><a href="faq.html">FAQ</a></li>
-    <li class="level1 nav-leaf"><a href="CONTRIBUTING.html">Contributor guide</a></li>
+    <li class="level1 nav-leaf"><a href="CONTRIBUTING.html">Contributor Guide</a></li>
     <li class="level1 nav-leaf"><a href="ADOPTERS.html">Adopters</a></li>
     <li class="level1 nav-leaf"><a href="colophon.html">Colophon</a></li>
     <li class="level1 active nav-leaf"><a href="#">Glossary</a></li>
@@ -261,40 +261,62 @@
             <tr>
               <th>Type</th>
               <th>Method Name</th>
+              <th>Notes</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><code>F[A] =&gt; F[Unit]</code></td>
               <td><code>void</code></td>
+              <td>
+              </td>
             </tr>
             <tr>
               <td><code>F[A] =&gt; B =&gt; F[B]</code></td>
               <td><code>as</code></td>
+              <td>
+              </td>
             </tr>
             <tr>
               <td><code>F[A] =&gt; (A =&gt; B) =&gt; F[B]</code></td>
               <td><code>map</code></td>
+              <td>
+              </td>
+            </tr>
+            <tr>
+              <td><code>F[A] =&gt; (A =&gt; A1) =&gt; F[A1])</code></td>
+              <td><code>mapOrKeep</code></td>
+              <td>A1 &gt;: A, the (A =&gt; A1) is a PartialFunction</td>
             </tr>
             <tr>
               <td><code>F[A] =&gt; (A =&gt; B) =&gt; F[(A,B)]</code></td>
               <td><code>fproduct</code></td>
+              <td>
+              </td>
             </tr>
             <tr>
               <td><code>F[A] =&gt; (A =&gt; B) =&gt; F[(B,A)]</code></td>
               <td><code>fproductLeft</code></td>
+              <td>
+              </td>
             </tr>
             <tr>
               <td><code>F[A] =&gt; B =&gt; F[(B, A)]</code></td>
               <td><code>tupleLeft</code></td>
+              <td>
+              </td>
             </tr>
             <tr>
               <td><code>F[A] =&gt; B =&gt; F[(A, B)]</code></td>
               <td><code>tupleRight</code></td>
+              <td>
+              </td>
             </tr>
             <tr>
               <td><code>(A =&gt; B) =&gt; (F[A] =&gt; F[B])</code></td>
               <td><code>lift</code></td>
+              <td>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -619,7 +641,7 @@
               <td><code>A: Monoid</code></td>
             </tr>
             <tr>
-              <td><code>F[A] =&gt; B =&gt; ((B,A) =&gt; B) =&gt; F[B]</code></td>
+              <td><code>F[A] =&gt; B =&gt; ((B,A) =&gt; B) =&gt; B</code></td>
               <td><code>foldLeft</code></td>
               <td>
               </td>
